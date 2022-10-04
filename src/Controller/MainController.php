@@ -8,7 +8,6 @@ use App\Manager\MeetingManager;
 class MainController extends AbstractController {
 
     public function home() {
-
         $meetingManager = new MeetingManager();
 
         return $this->renderView('main/home.php', [

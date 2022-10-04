@@ -61,13 +61,14 @@ abstract class AbstractManager {
     }
 
     protected function update(string $class, array $fields, int $id) {
-        $query = 'UPDATE ' . $this->classToTable($class) . ' SET';
+        $query = 'UPDATE ' . $this->classToTable($class) . ' SET ';
         foreach(array_keys($fields) as $field) {
             $query .= $field . ' = :' . $field;
             if ($field != array_key_last($fields)) $query .= ', ';
         }
         $query .= ' WHERE id = :id';
         $fields['id'] = $id;
+        
         return $this->executeQuery($query, $fields);
     }
 

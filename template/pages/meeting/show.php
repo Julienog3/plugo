@@ -10,7 +10,7 @@
 <p><?= $data['meeting']->getDetails() ?></p>
         
 <div class="grid">
-    <a href="#" role="button">
+    <a href="?page=meeting_modify&id=<?= $data['meeting']->getId() ?>" role="button">
         Modifier le RDV
     </a>
     <a href="?page=meeting_remove&id=<?= $data['meeting']->getId() ?>" role="button" class="secondary">

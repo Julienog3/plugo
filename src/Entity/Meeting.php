@@ -7,7 +7,7 @@ class Meeting {
     private ?string $title;
     private ?string $details;
     private ?string $date;
-    private ?bool $important;
+    private ?int $important;
 
     public function getId() {
         return $this->id;
@@ -37,11 +37,11 @@ class Meeting {
         $this->date = $date;
     }
 
-    public function getImportant(): bool {
+    public function getImportant(): ?int {
         return $this->important;
     }
 
-    public function setImportant(bool $important) {
+    public function setImportant(?int $important): void {
         $this->important = $important;
     }
 }

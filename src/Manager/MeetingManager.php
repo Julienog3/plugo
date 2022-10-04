@@ -24,6 +24,15 @@ class MeetingManager extends AbstractManager {
         ]);
     }
 
+    public function modify(int $id, Meeting $meeting) {
+        return $this->update(Meeting::class, [
+            'title' => $meeting->getTitle(),
+            'details' => $meeting->getDetails(),
+            'date' => $meeting->getDate(),
+            'important' => $meeting->getImportant()
+        ], $id);
+    }
+
     public function remove(Meeting $meeting) {
         return $this->delete(Meeting::class, $meeting->getId());
     }

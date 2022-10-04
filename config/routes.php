@@ -24,5 +24,9 @@ const ROUTES = [
     'meeting_add' => [
         'controller' => App\Controller\MeetingController::class,
         'method' => 'add',
+    ],
+    'meeting_modify' => [
+        'controller' => App\Controller\MeetingController::class,
+        'method' => 'modify',
     ]
 ];

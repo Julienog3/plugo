@@ -27,7 +27,6 @@ class MeetingController extends AbstractController {
             $meeting->setDetails($_POST['details']);
             $meeting->setDate($_POST['date']);
 
-            var_dump(boolval($_POST['important'] === 'on'));
             $meeting->setImportant(!!($_POST['important'] === 'on'));
 
             $meetingManager->add($meeting);
@@ -35,6 +34,32 @@ class MeetingController extends AbstractController {
             return $this->redirectToRoute('home');
         }
         return $this->renderView('meeting/add.php');
+    }
+
+    public function modify() {
+        $id = $_GET['id'];
+
+        $meetingManager = new MeetingManager();
+
+        $meeting = $meetingManager->find($id);
+
+        if (!empty($_POST)) {
+            $meeting->setTitle($_POST['title']);
+            $meeting->setDetails($_POST['details']);
+            $meeting->setDate($_POST['date']);
+
+            $meeting->setImportant($_POST['important'] ? 1 : 0);
+
+            var_dump($meeting->getImportant());
+
+            $meetingManager->modify($id, $meeting);
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->renderView('meeting/modify.php', [
+            'meeting' => $meetingManager->find($id)
+        ]);
     }
 
     public function remove() {
