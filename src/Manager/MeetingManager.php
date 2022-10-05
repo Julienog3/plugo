@@ -11,8 +11,17 @@ class MeetingManager extends AbstractManager {
         return $this->readOne(Meeting::class, $id);
     }
 
-    public function findAll() {
-        return $this->readMany(Meeting::class);
+    public function findOneBy(array $filters = []) {
+        return $this->readOne(Meeting::class, null, $filters);
+    }
+
+    public function findAll(array $orders = []) {
+        return $this->readMany(Meeting::class, $orders);
+    }
+
+
+    public function findBy(array $filters = [], array $orders = [], int $limit) {
+        return $this->readMany(Meeting::class, $filters, $orders, $limit);
     }
 
     public function add(Meeting $meeting) {

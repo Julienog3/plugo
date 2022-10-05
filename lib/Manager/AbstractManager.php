@@ -30,16 +30,37 @@ abstract class AbstractManager {
         return strtolower(end($tmp));
     }
 
-    protected function readOne(string $class, int $id) {
+    protected function readOne(string $class, int $id, array $filters = []) {
         $query = 'SELECT * FROM ' . $this->classToTable($class) . ' WHERE id = :id';
         $stmt = $this->executeQuery($query, ['id' => $id]);
         $stmt->setFetchMode(\PDO::FETCH_CLASS, $class);
         return $stmt->fetch();
     }
 
-    protected function readMany(string $class) {
+    protected function readMany(string $class, array $filters = [], array $orders = [], int $limit) {
         $query = 'SELECT * FROM ' . $this->classToTable($class);
-        if ($stmt = $this->executeQuery($query)) {
+        if (!empty($filters)) {
+            $query .= ' WHERE ';
+            foreach ($filters as $key => $value) {
+                $query .= $key . ' = :' . $key;
+                if ($key !== array_key_last($filters)) {
+                    $query .= ' AND ';
+                }
+            }
+        }
+        if (!empty($orders)) {
+            $query .= ' ORDER BY ';
+            foreach ($orders as $key => $value) {
+                $query .= $key . ' ' . $value;
+                if ($key !== array_key_last($orders)) {
+                    $query .= ', ';
+                }
+            }
+        }
+        if (isset($limit)) {
+            $query .= ' LIMIT ' . $limit;
+        }
+        if ($stmt = $this->executeQuery($query, $filters)) {
             $stmt->setFetchMode(\PDO::FETCH_CLASS, $class);
             return $stmt->fetchAll();
         }

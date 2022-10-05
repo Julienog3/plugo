@@ -12,7 +12,7 @@ class MainController extends AbstractController {
 
         return $this->renderView('main/home.php', [
             'title' => 'Accueil',
-            'meetings' => $meetingManager->findAll()
+            'meetings' => $meetingManager->findBy(['important' => 0], ['id' => 'DESC'], 1)
         ]);
     }
 
