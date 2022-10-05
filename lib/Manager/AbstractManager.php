@@ -30,9 +30,28 @@ abstract class AbstractManager {
         return strtolower(end($tmp));
     }
 
-    protected function readOne(string $class, int $id, array $filters = []) {
-        $query = 'SELECT * FROM ' . $this->classToTable($class) . ' WHERE id = :id';
-        $stmt = $this->executeQuery($query, ['id' => $id]);
+    protected function readOne(string $class, ?int $id, array $filters = []) {
+        $query = 'SELECT * FROM ' . $this->classToTable($class);
+
+        if(isset($id)) {
+            $query .= ' WHERE id = :id';
+        }
+
+        if (!empty($filters)) {
+            $query .= ' WHERE ';
+            foreach ($filters as $key => $value) {
+                $query .= $key . ' = :' . $key;
+                if ($key !== array_key_last($filters)) {
+                    $query .= ' AND ';
+                }
+            }
+        }
+
+        if(isset($id)) {
+            $stmt = $this->executeQuery($query, ['id' => $id]);
+        } else {
+            $stmt = $this->executeQuery($query, $filters);
+        }
         $stmt->setFetchMode(\PDO::FETCH_CLASS, $class);
         return $stmt->fetch();
     }
