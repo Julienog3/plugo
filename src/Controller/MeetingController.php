@@ -27,13 +27,15 @@ class MeetingController extends AbstractController {
             $meeting->setDetails($_POST['details']);
             $meeting->setDate($_POST['date']);
 
-            $meeting->setImportant(!!($_POST['important'] === 'on'));
+            $meeting->setImportant(isset($_POST['important']) ? 1 : 0);
 
             $meetingManager->add($meeting);
 
             return $this->redirectToRoute('home');
         }
-        return $this->renderView('meeting/add.php');
+        return $this->renderView('meeting/add.php', [
+            'type' => 'add'
+        ]);
     }
 
     public function modify() {
@@ -48,9 +50,7 @@ class MeetingController extends AbstractController {
             $meeting->setDetails($_POST['details']);
             $meeting->setDate($_POST['date']);
 
-            $meeting->setImportant($_POST['important'] ? 1 : 0);
-
-            var_dump($meeting->getImportant());
+            $meeting->setImportant(isset($_POST['important']) ? 1 : 0);
 
             $meetingManager->modify($id, $meeting);
 
@@ -58,6 +58,7 @@ class MeetingController extends AbstractController {
         }
 
         return $this->renderView('meeting/modify.php', [
+            'type' => 'edit',
             'meeting' => $meetingManager->find($id)
         ]);
     }

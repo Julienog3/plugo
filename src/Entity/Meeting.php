@@ -44,4 +44,14 @@ class Meeting {
     public function setImportant(?int $important): void {
         $this->important = $important;
     }
+
+    public function displayDate() {
+        $tmp = new \Datetime($this->date);
+        return $tmp->format('Y-m-d');
+      }
+    
+      public function displayTime() {
+        $tmp = new \Datetime($this->date);
+        return $tmp->format('h:i') . ' h';
+      }
 }
